@@ -21,26 +21,45 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message=FALSE)
 
 # Background {-}
 
-This notebook aims to document in a detailed way the analysis performed and findings obtained as part of the [**Excellence in Agronomy (EiA) Initiative**](https://www.cgiar.org/initiative/11-excellence-in-agronomy-eia-solutions-for-agricultural-transformation/) in **Latin America and the Caribbean (LAC)** region, specifically **Peru**. EiA is one of a series of [**CGIAR Initiatives**](https://www.cgiar.org/research/cgiar-portfolio/) that belongs to the **Environmental health & biodiversity** impact area and whose aim is *"to achieve sustainable intensification of smallholder farming systems, benefiting the agricultural resource base and its native organisms"*. Regarding the EiA LAC-Peru Use Case, the study area is located in the Chugay District, Sanchez Carrión Province, La Libertad region. This project is led by [**David A. Ramírez**](http://www.davidramirezc.com/) from [**CIP**](https://cipotato.org/) working hand in hand with local partners led by **Ronal Otiniano** from NGO [**Asociación Pataz**](https://www.asociacionpataz.org.pe/).
+Weather data are important in agriculture and related sciences for activities planning, resources management, crop yield prediction, among others. However, sometimes there are no weather stations on site, so it is necessary to look for some alternatives to supply this need. This notebook aims to explain briefly how weather data can be retrieved from free publicly available sources using R.
 
-The main activities planned for the LAC-Peru Use Case were/are:
-
-1. [Agronomic data digitization using the e-Agrology platform](#agronomic-data-digitization) (*in progress*). 
-2. [Long-term trial of agronomic practices with potential for Climate Change mitigation](#long-term-demonstration-trials) (*in progress*).
-3. [Remote sensing techniques applied to the LAC-Peru Use Case](#remote-sensing-tools) (*in progress*). 
-4. [Yield gap decomposition analysis](#yield-gap-decomposition) (*in progress*).
-
-Los datos meteorlogicos son una herramienta importante para la agricultura y ciencias afines pues ayudan en la planificacion de actividades, el manejo de los recursos, prediccion de rendimiento, entre otros. No obstante muchas veces no se cuenta con estaciones meteorlogicas en situ por lo que 
+**NOTE:** Do not forget that always the best data is the one measured on the site.
 
 # Library loading
 
 For this, the following libraries will be used:
 ```{r}
-library(nasapower)   #
+library(nasapower)   # nasa database
+library(rnoaa)       # noaa database
 library(dplyr)       #
 library(lubridate)   #
+
 ```
 
+# NASA POWER API Client
+
+
+
+```{r}
+# Specify the location and time period for the data
+location <- c(40.7128, -74.0060)  # Latitude and longitude for New York City
+start_date <- "2022-01-01"
+end_date <- "2022-01-31"
+
+# Specify the variables you want to retrieve (e.g., temperature and solar radiation)
+variables <- c("T2M_MAX", "T2M_MIN", "ALLSKY_SFC_SW_DWN")
+
+# Retrieve hourly data
+ag_d <- get_power(
+  community = "ag",
+  lonlat = c(151.81, -27.48),
+  pars = c("RH2M", "T2M", "PRECTOTCORR"),
+  dates = "2001-01-01",
+  temporal_api = "hourly"
+)
+# View the first few rows of the data
+head(ag_d)
+```
 
 
 
